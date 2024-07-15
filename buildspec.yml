@@ -1,0 +1,33 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo Installing Node.js...
+      - curl -sL https://deb.nodesource.com/setup_18.x | bash -
+      - apt-get install -y nodejs
+      - echo Installing Yarn...
+      - curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | apt-key add -
+      - echo "deb https://dl.yarnpkg.com/debian/ stable main" | tee /etc/apt/sources.list.d/yarn.list
+      - apt-get update && apt-get install --no-install-recommends -y yarn
+  pre_build:
+    commands:
+      - echo Installing dependencies...
+      - npm install -g @angular/cli
+      - npm install
+  build:
+    commands:
+      - echo Building the Angular app...
+      - ./node_modules/.bin/ng build --configuration production
+  post_build:
+    commands:
+      - echo Moving appspec.yml and scripts to dist/angularapp1
+      - mv appspec.yml dist/angularapp1/
+      - mv scripts dist/angularapp1/
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
+  base-directory: dist/angularapp1

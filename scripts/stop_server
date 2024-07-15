@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# Check if the service is running
+isExistApp=$(pgrep httpd)
+
+if [[ -n $isExistApp ]]; then
+    # Stop the service
+    service httpd stop
+fi
+
+# Add more commands if you have other services or processes to stop
+
+
